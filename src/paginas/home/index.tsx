@@ -11,7 +11,7 @@ export function Home() {
 
             <h1 className="text-[1.4rem] text-center font-bold mb-[60px]">Carros novos e usados em todo o Brasil</h1>
 
-            <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:m-4">
+            <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-4 sm:m-4">
                 <Link to='#'>
                     <div className="bg-white rounded-lg overflow-hidden ">
                         <img className="w-[full] mb-3 hover:scale-[1.03] transition-all" src="https://image.webmotors.com.br/_fotos/anunciousados/gigante/2024/202408/20240816/chevrolet-tracker-1.2-turbo-flex-premier-automatico-wmimagem14513584887.jpg?s=fill&w=1920&h=1440&q=75" alt="carro" />
