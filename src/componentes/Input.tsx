@@ -19,7 +19,7 @@ export function Input({ name, placeholder, type, register, error, rules  }: Inpu
             {...register(name, rules)}
             id={name}
         />
-        {error && <p>{error}</p>    }
+        {error && <p className="text-red-600 ms-2 mt-[-10px] text-[.8rem] self-start">{error}</p>    }
         </>
     )
 }
