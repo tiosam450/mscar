@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 
 const schema = z.object({
-    email: z.string().email('Insira um e-mail válido').nonempty('O campo é obrigatório'),
+    email: z.string().nonempty('O campo é obrigatório').email('Insira um e-mail válido'),
     password: z.string().nonempty('O campo é obrigatório')
 })
 
@@ -25,6 +25,9 @@ export function Login(){
     return(
         <section className='w-full h-screen flex flex-col items-center justify-center'>
             <img className='max-w-[200px] mb-10' src={logo} alt="logo" />
+            
+            <h1 className='mb-4 text-[1.2rem] font-bold'>Login</h1>
+
             <form onSubmit={handleSubmit(login)} action="" className='w-[90%] max-w-[450px] mx-4 flex flex-col items-center rounded-xl gap-4 '>
                 <Input
                 type='email'

@@ -4,6 +4,8 @@ import { Input } from '../../componentes/Input'
 import {z} from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {Link} from 'react-router-dom'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { auth } from '../../services/conexaoFireBase'
 
 const schema = z.object({
     nome: z.string().nonempty('O campo é obrigatório'),
@@ -19,14 +21,21 @@ export function Registro(){
         mode:  'onChange'
     })
 
-    function login(dados: Formulario){
-        console.log(dados)
+    async function cadastro(dados: Formulario){
+        createUserWithEmailAndPassword(auth, dados.email, dados.password).then(async (user)=>{
+            await updateProfile(user.user,{
+                displayName: dados.nome
+            })
+        })
     }
 
     return(
         <section className='w-full h-screen flex flex-col items-center justify-center'>
             <img className='max-w-[200px] mb-10' src={logo} alt="logo" />
-            <form onSubmit={handleSubmit(login)} action="" className='w-[90%] max-w-[450px] mx-4 flex flex-col items-center rounded-xl gap-4 '>
+           
+           <h1 className='mb-4 text-[1.2rem] font-bold'>Cadastre-se</h1>
+
+            <form onSubmit={handleSubmit(cadastro)} action="" className='w-[90%] max-w-[450px] mx-4 flex flex-col items-center rounded-xl gap-4 '>
                 <Input
                 type='text'
                 name='nome'
