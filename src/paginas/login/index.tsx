@@ -4,6 +4,9 @@ import { Input } from '../../componentes/Input'
 import {z} from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../services/conexaoFireBase'
+import toast from 'react-hot-toast'
 
 const schema = z.object({
     email: z.string().nonempty('O campo é obrigatório').email('Insira um e-mail válido'),
@@ -15,11 +18,13 @@ type Formulario = z.infer<typeof schema>
 export function Login(){
     const {register, handleSubmit, formState:{errors}} = useForm<Formulario>({
         resolver: zodResolver(schema),
-        mode:  'onChange'
+        mode: 'onChange'
     })
 
     function login(dados: Formulario){
-        console.log(dados)
+        signInWithEmailAndPassword(auth, dados.email, dados.password).then((user)=>{
+            toast.success(`Bem-vindo ${user.user.displayName}`)
+        })
     }
 
     return(
