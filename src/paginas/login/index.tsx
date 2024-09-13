@@ -3,7 +3,7 @@ import logo from '../../assets/logo_mscar.webp'
 import { Input } from '../../componentes/Input'
 import {z} from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../services/conexaoFireBase'
 import toast from 'react-hot-toast'
@@ -16,6 +16,7 @@ const schema = z.object({
 type Formulario = z.infer<typeof schema>
 
 export function Login(){
+    const navigate = useNavigate()
     const {register, handleSubmit, formState:{errors}} = useForm<Formulario>({
         resolver: zodResolver(schema),
         mode: 'onChange'
@@ -24,13 +25,13 @@ export function Login(){
     function login(dados: Formulario){
         signInWithEmailAndPassword(auth, dados.email, dados.password).then((user)=>{
             toast.success(`Bem-vindo ${user.user.displayName}`)
+            navigate('/dashboard', {replace: true})
         })
     }
 
     return(
         <section className='w-full h-screen flex flex-col items-center justify-center'>
-            <img className='max-w-[200px] mb-10' src={logo} alt="logo" />
-            
+           <Link to='/'> <img className='max-w-[200px] mb-10' src={logo} alt="logo" /></Link>
             <h1 className='mb-4 text-[1.2rem] font-bold'>Login</h1>
 
             <form onSubmit={handleSubmit(login)} action="" className='w-[90%] max-w-[450px] mx-4 flex flex-col items-center rounded-xl gap-4 '>

@@ -5,6 +5,9 @@ import { Dashboard } from "../paginas/dashboard";
 import { Detalhes } from "../paginas/detalhes";
 import { Registro } from "../paginas/registro";
 import { Login } from "../paginas/login";
+import { Private } from "./private";
+import Cadastro from "../paginas/cadastro";
+
 
 const rotas = createBrowserRouter([{
     element: <Header />,
@@ -15,7 +18,7 @@ const rotas = createBrowserRouter([{
         },
         {
             path: '/dashboard',
-            element: <Dashboard />
+            element: <Private><Dashboard/></Private>
         },
         {
             path: '/detalhes',
@@ -24,6 +27,10 @@ const rotas = createBrowserRouter([{
         {
             path: '/detalhes:id',
             element: <Detalhes />
+        },
+        {
+            path: '/cadastro',
+            element:<Private><Cadastro/></Private>
         },
     ]
 },
