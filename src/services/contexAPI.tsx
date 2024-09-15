@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { auth } from "./services/conexaoFireBase";
+import { auth } from "./conexaoFireBase";
 
 interface ChildrenProps {
     children: ReactNode
@@ -15,6 +15,8 @@ interface UserProps{
 type DadosApi = {
     logado: boolean;
     loadingAuth: boolean;
+    dadosUsuario: ({uid, nome, email}:UserProps)=>void;
+    usuario: UserProps | null;
 }
 
 
@@ -22,7 +24,7 @@ const conteudoAPI = createContext({} as DadosApi)
 
 export function ApiProvider({ children }: ChildrenProps) {
 
-    const [usuario, setUsuario] = useState<UserProps | null>()
+    const [usuario, setUsuario] = useState<UserProps | null>(null)
     const [loadingAuth, setLoadingAuth] = useState(true)
 
     useEffect(()=>{
@@ -47,10 +49,20 @@ export function ApiProvider({ children }: ChildrenProps) {
 
     },[])
 
+    function dadosUsuario({uid, nome, email, }:UserProps){
+        setUsuario({
+            uid,
+            nome,
+            email,
+        })
+    }
+
     return (
         <conteudoAPI.Provider value={{
             logado: !!usuario,
             loadingAuth,
+            dadosUsuario,
+            usuario
 
         }}>
             {children}

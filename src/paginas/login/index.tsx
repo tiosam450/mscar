@@ -10,7 +10,7 @@ import toast from 'react-hot-toast'
 
 const schema = z.object({
     email: z.string().nonempty('O campo é obrigatório').email('Insira um e-mail válido'),
-    password: z.string().nonempty('O campo é obrigatório')
+    password: z.string().nonempty('O campo é obrigatório').min(6, 'A senha precisa ter no mínimo 6 caracteres')
 })
 
 type Formulario = z.infer<typeof schema>
@@ -22,10 +22,14 @@ export function Login(){
         mode: 'onChange'
     })
 
-    function login(dados: Formulario){
-        signInWithEmailAndPassword(auth, dados.email, dados.password).then((user)=>{
+    async function login(dados: Formulario){
+       await signInWithEmailAndPassword(auth, dados.email, dados.password).then((user)=>{
             toast.success(`Bem-vindo ${user.user.displayName}`)
             navigate('/dashboard', {replace: true})
+        }).catch((erro)=>{
+            if(erro =='FirebaseError: Firebase: Error (auth/invalid-credential).'){
+                toast.error('E-mail ou senha inválido')
+            }
         })
     }
 

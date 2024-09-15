@@ -4,7 +4,7 @@ import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import rotas from './rotas/rotas'
 import { Toaster } from 'react-hot-toast'
-import { ApiProvider } from './contexAPI'
+import { ApiProvider } from './services/contexAPI'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

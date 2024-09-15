@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import conteudoAPI from "../contexAPI"
+import conteudoAPI from "../services/contexAPI"
 import spinnerCar from '../assets/car-loading-animation.webp'
 import { Navigate } from "react-router-dom"
 

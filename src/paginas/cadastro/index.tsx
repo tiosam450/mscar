@@ -1,6 +1,9 @@
+import UserMenu from "../../componentes/UserMenu";
 
 export default function Cadastro() {
     return (
-        <h1>Cadastro</h1>
+        <section className="container">
+            <UserMenu/>
+        </section>
     )
 }

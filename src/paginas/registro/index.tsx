@@ -3,10 +3,12 @@ import logo from '../../assets/logo_mscar.webp'
 import { Input } from '../../componentes/Input'
 import {z} from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {Link, replace, useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { auth } from '../../services/conexaoFireBase'
 import toast from 'react-hot-toast'
+import { useContext } from 'react'
+import conteudoAPI from '../../services/contexAPI'
 
 const schema = z.object({
     nome: z.string().nonempty('O campo é obrigatório'),
@@ -18,6 +20,7 @@ type Formulario = z.infer<typeof schema>
 
 export function Registro(){
 
+    const {dadosUsuario} =useContext(conteudoAPI)
     const navigate = useNavigate()
 
     const {register, handleSubmit, formState:{errors}} = useForm<Formulario>({
@@ -30,8 +33,16 @@ export function Registro(){
             await updateProfile(user.user,{
                 displayName: dados.nome
             })
+
+            dadosUsuario({
+                uid: user.user.uid,
+                nome: dados.nome,
+                email: dados.email
+            })
+
             toast.success('Cadastrado com sucesso!')
             navigate('/dashboard', {replace:true})
+
         }).catch((erro)=>{
             console.log(erro)
             toast.error('Algo deu errado')
