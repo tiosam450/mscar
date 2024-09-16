@@ -1,7 +1,9 @@
 import { useContext } from "react"
 import conteudoAPI from "../services/contexAPI"
-import spinnerCar from '../assets/car-loading-animation.webp'
+import spinnerCar from '../assets/spinner_car.json'
 import { Navigate } from "react-router-dom"
+import Lottie from "lottie-react"
+
 
 
 export function Private({ children }: any) {
@@ -10,7 +12,7 @@ export function Private({ children }: any) {
     if (loadingAuth) {
         return (
             <div className="w-full h-screen flex items-center justify-center">
-                <img className="max-w-[350px] mix-blend-multiply " src={spinnerCar} alt="" />
+                <Lottie className="max-w-[250px] " animationData={spinnerCar} />
             </div>
         )
     }

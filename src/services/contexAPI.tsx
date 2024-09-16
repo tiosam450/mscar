@@ -42,8 +42,6 @@ export function ApiProvider({ children }: ChildrenProps) {
             }
         })
 
-        console.log(usuario)
-
         return () => checkUsuario()
         
 

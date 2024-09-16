@@ -17,13 +17,12 @@ export function Header() {
         if (confirm('Que pena, deseja realmente sair?')) {
             signOut(auth)
             navigate('/', {replace:true})
-            
         }
     }
 
     return (
         <>
-            <header className="w-full py-2 bg-white mb-[30px] sticky top-0">
+            <header className="w-full py-2 bg-white mb-[30px] sticky top-0 z-10">
                 <div className="container ">
                     <Link to='/'><img src={logo} alt="logo" className="max-w-[150px] hover:text-red-700 transition-all " /></Link>
 
