@@ -9,10 +9,11 @@ import toast from "react-hot-toast";
 import conteudoAPI from "../../services/contexAPI";
 import { v4 as uuidV4 } from 'uuid'
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../../services/conexaoFireBase";
+import { db, storage } from "../../services/conexaoFireBase";
 import spinnerCar from '../../assets/spinner_car.json'
 import Lottie from "lottie-react"
 import { FaTrash } from "react-icons/fa";
+import { addDoc, collection } from "firebase/firestore";
 
 
 
@@ -51,6 +52,43 @@ export default function Cadastro() {
     })
 
     function cadastraCarro(data: FormData) {
+        if(galeria.length == 0){
+            toast.error('Adicione imagens do veículo')
+            return
+        }
+
+        const listaFotos = galeria.map(item=>{
+            return{
+                uid: item.uid,
+                nome: item.nome,
+                url: item.url,
+            }
+        })
+
+        addDoc(collection(db, 'anuncios'), {
+            nomeCarro: data.nomeCarro,
+            ano: data.ano,
+            modelo: data.modelo,
+            marca: data.marca,
+            km: data.km,
+            valor: data.valor,
+            cidade: data.cidade,
+            estado: data.estado,
+            whatsapp: data.whatsapp,
+            descricao: data.descricao,
+            data: new Date(),
+            proprietario: usuario?.nome,
+            uid: usuario?.uid,
+            fotos: listaFotos,
+        }).then(()=>{
+            toast.success('Parabéns! Seu anúncio está online!')
+            reset();
+            setGaleria([]);
+        }).catch((erro)=>{
+            toast.error('Ops! Algo deu errado')
+            console.log(erro)
+        })
+
 
     }
 

@@ -25,7 +25,7 @@ const rotas = createBrowserRouter([{
             element: <Detalhes />
         },
         {
-            path: '/detalhes:id',
+            path: '/detalhes/:id',
             element: <Detalhes />
         },
         {
