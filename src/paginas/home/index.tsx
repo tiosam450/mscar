@@ -1,6 +1,5 @@
 import { collection, getDoc, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { DiVim } from "react-icons/di";
 import { PiMapPin } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { db } from "../../services/conexaoFireBase";
