@@ -8,10 +8,11 @@ import { ChangeEvent, useContext, useState } from "react";
 import toast from "react-hot-toast";
 import conteudoAPI from "../../services/contexAPI";
 import { v4 as uuidV4 } from 'uuid'
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../services/conexaoFireBase";
 import spinnerCar from '../../assets/spinner_car.json'
 import Lottie from "lottie-react"
+import { FaTrash } from "react-icons/fa";
 
 
 
@@ -31,9 +32,17 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
+interface GaleriaProps{
+    uid?: string
+    nome?: string
+    previewUrl?: string
+    url?: string
+}
+
 export default function Cadastro() {
     const { usuario } = useContext(conteudoAPI)
     const [loadingImage, setLoadingImage] = useState(false)
+    const [galeria, setGaleria] = useState<GaleriaProps[]>([])
 
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
@@ -58,15 +67,38 @@ export default function Cadastro() {
         const uidUsuario = usuario?.uid
         const uidImagem = uuidV4()
         const imagemRef = ref(storage, `imagens/${uidUsuario}/${uidImagem}`)
+       
         setLoadingImage(true)
 
         uploadBytes(imagemRef, imagem).then((item) => {
-            getDownloadURL(item.ref).then(() => {
+            getDownloadURL(item.ref).then((downLoadUrl) => {
                 toast.success('Upload ok!')
                 setLoadingImage(false)
+               
+                const itemImagem={
+                    uid: uidUsuario,
+                    nome: uidImagem,
+                    previewUrl: URL.createObjectURL(imagem),
+                    url: downLoadUrl,
+                }
+
+                setGaleria((imagens) => [...imagens, itemImagem])
+                
             })
         }).catch((erro)=>{
             toast.error('Algo deu errado!')
+            console.log(erro)
+        })
+    }
+    async function delImage(item:GaleriaProps){
+        const imagePath = `imagens/${item.uid}/${item.nome}`
+        const imageRef = ref(storage, imagePath)
+        
+        await deleteObject(imageRef).then(()=>{
+            toast.success("Deletado com sucesso!")
+            setGaleria(galeria.filter((foto) => foto.url !== item.url))
+        }).catch((erro)=>{
+            toast.error('Algo deu errado')
             console.log(erro)
         })
     }
@@ -80,6 +112,12 @@ export default function Cadastro() {
                     {loadingImage ? <Lottie className="absolute w-[100px]" animationData={spinnerCar}/> :<FiUpload className="absolute cursor-pointer text-[2rem] text-gray-500" /> }
                     
                 </label>
+                {galeria.map((item)=>(
+                    <div key={item.uid} className="w-48 h-36 flex items-center  bg-white rounded-lg overflow-hidden relative" >
+                        <button className="absolute top-0 right-0 m-2 text-[1.2rem] text-white hover:scale-[1.05] transition-all" onClick={()=> delImage(item)}><FaTrash /></button>
+                        <img src={item.previewUrl} alt="" className="rounded-lg w-full h-full object-cover mx-2 "/>
+                    </div>
+                ))}
             </div>
 
             <div className="w-full flex items-center  bg-white rounded-lg p-4 mb-[60px]">
@@ -183,7 +221,7 @@ export default function Cadastro() {
                         <p className="text-[.9rem] font-bold mb-[3px]"> Whatsapp:</p>
                         <Input
                             type="text"
-                            name="valor"
+                            name="whatsapp"
                             placeholder="Ex: (11) 6566-7871"
                             register={register}
                             error={errors.whatsapp?.message}
