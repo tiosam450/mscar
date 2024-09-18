@@ -56,7 +56,7 @@ export function Registro(){
            
            <h1 className='mb-4 text-[1.2rem] font-bold'>Cadastre-se</h1>
 
-            <form onSubmit={handleSubmit(cadastro)} action="" className='w-[90%] max-w-[450px] mx-4 flex flex-col items-center rounded-xl gap-4 '>
+            <form onSubmit={handleSubmit(cadastro)} action="" className='w-[90%] max-w-[450px] mx-4 flex flex-col items-center rounded-xl gap-2 '>
                 <Input
                 type='text'
                 name='nome'

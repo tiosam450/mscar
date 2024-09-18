@@ -1,6 +1,6 @@
 import UserMenu from "../../componentes/UserMenu";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 import { PiMapPin } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { db, storage } from "../../services/conexaoFireBase";
@@ -9,6 +9,7 @@ import Lottie from "lottie-react"
 import { FaTrash } from "react-icons/fa";
 import { deleteObject, ref } from "firebase/storage";
 import toast from "react-hot-toast";
+import conteudoAPI from "../../services/contexAPI";
 
 interface AnuncioProps {
     id: string
@@ -21,6 +22,7 @@ interface AnuncioProps {
     cidade: string
     estado: string
     fotos: GaleriaProps[]
+    uid: string
 }
 
 interface GaleriaProps {
@@ -34,14 +36,14 @@ interface GaleriaProps {
 
 
 export function Dashboard() {
-
+    const {usuario} = useContext(conteudoAPI)
     const [anuncios, setAnuncios] = useState<AnuncioProps[]>([])
     const [loadingImagem, setLoadingImagem] = useState<string[]>([])
 
     useEffect(() => {
         function carregaAnuncios() {
             const anuncioRef = collection(db, 'anuncios')
-            const queryRef = query(anuncioRef, orderBy('data', 'desc'))
+            const queryRef = query(anuncioRef, where('uid', '==', usuario?.uid), orderBy('data', 'desc'))
 
             getDocs(queryRef).then((item) => {
                 const anuncios = [] as AnuncioProps[]
@@ -58,6 +60,7 @@ export function Dashboard() {
                         cidade: item.data().cidade,
                         estado: item.data().estado,
                         fotos: item.data().fotos,
+                        uid: item.data().uid
                     })
                 })
                 setAnuncios(anuncios)

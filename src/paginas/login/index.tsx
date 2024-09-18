@@ -38,7 +38,7 @@ export function Login(){
            <Link to='/'> <img className='max-w-[200px] mb-10' src={logo} alt="logo" /></Link>
             <h1 className='mb-4 text-[1.2rem] font-bold'>Login</h1>
 
-            <form onSubmit={handleSubmit(login)} action="" className='w-[90%] max-w-[450px] mx-4 flex flex-col items-center rounded-xl'>
+            <form onSubmit={handleSubmit(login)} action="" className='w-[90%] max-w-[450px] mx-4 flex flex-col items-center rounded-xl gap-2'>
                 <Input
                 type='email'
                 name='email'
