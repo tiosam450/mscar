@@ -93,11 +93,11 @@ export default function Cadastro() {
     }
 
     function enviaImagem(e: ChangeEvent<HTMLInputElement>) {
-        if (e.target.files && e.target.files[0].size <= 100000) {
+        if (e.target.files && e.target.files[0].size <= 2000000) {
             const imagem = e.target.files[0]
             upLoadImage(imagem)
         } else {
-            toast.error('Insira imagens com no máximo 1mb')
+            toast.error('Insira imagens com no máximo 2mb')
         }
     }
 

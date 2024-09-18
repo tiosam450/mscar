@@ -1,10 +1,12 @@
-import { collection, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { PiMapPin } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { db } from "../../services/conexaoFireBase";
+import spinnerCar from '../../assets/spinner_car.json'
+import Lottie from "lottie-react"
 
-interface AnuncioProps{
+interface AnuncioProps {
     id: string
     marca: string
     nomeCarro: string
@@ -17,7 +19,7 @@ interface AnuncioProps{
     fotos: GaleriaProps[]
 }
 
-interface GaleriaProps{
+interface GaleriaProps {
     uid: string
     nome: string
     url: string
@@ -25,16 +27,17 @@ interface GaleriaProps{
 
 export function Home() {
     const [anuncios, setAnuncios] = useState<AnuncioProps[]>([])
+    const [loadingImagem, setLoadingImagem] = useState<string[]>([])
 
-    useEffect(()=>{
-        function carregaAnuncios(){
+    useEffect(() => {
+        function carregaAnuncios() {
             const anuncioRef = collection(db, 'anuncios')
             const queryRef = query(anuncioRef, orderBy('data', 'desc'))
-            
-            getDocs(queryRef).then((item)=>{
+
+            getDocs(queryRef).then((item) => {
                 const anuncios = [] as AnuncioProps[]
 
-                item.forEach((item)=>{
+                item.forEach((item) => {
                     anuncios.push({
                         id: item.id,
                         marca: item.data().marca,
@@ -53,9 +56,13 @@ export function Home() {
         }
         carregaAnuncios()
 
-        
 
-    },[])
+
+    }, [])
+
+    function loadingImages(id: string) {
+        setLoadingImagem(prevLoadImage => [...prevLoadImage, id])
+    }
 
     return (
         <section className="container w-full flex flex-col items-center justify-center">
@@ -67,24 +74,32 @@ export function Home() {
             <h1 className="text-[1.4rem] text-center font-bold mb-[60px]">Carros novos e usados em todo o Brasil</h1>
 
             <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:m-4">
-                {anuncios.map((item)=>(
+                {anuncios.map((item) => (
                     <Link to={`/detalhes/${item.id}`} key={item.id}>
-                    <div className="bg-white rounded-lg overflow-hidden ">
-                        <img className="w-[full] mb-3 hover:scale-[1.03] transition-all" src={item.fotos[0].url} alt="carro" />
-                       
-                        <div>
-                            <h1 className=" sm:text-[1.2rem] font-bold text-red-700 mx-4 "><span className="text-gray-700">{item.marca}</span> {item.nomeCarro}</h1>
-                            <p className="mx-4 mb-4 text-gray-500 text-[.8rem]">{item.modelo}</p>
-                            <strong className="mx-4 mb-4 sm:text-[1.4rem] text-gray-700">R$ {item.valor}</strong>
-                            <div className="w-full flex justify-between px-4 mb-4">
-                                <p className="text-gray-500 ">{item.ano}</p>
-                                <p className="text-gray-500 ml-2">{item.km} km</p>
+                        <div className="bg-white rounded-lg overflow-hidden ">
+                            <div className="w-[full] h-[200px] mb-3 bg-slate-200 flex items-center justify-center" style={{display: loadingImagem.includes(item.id) ? 'none' : 'flex'}}><Lottie className="absolute w-[150px]" animationData={spinnerCar}/></div>
+                            <div className="mb-3 overflow-hidden">
+                                <img className="w-[full] h-[200px] hover:scale-[1.03] object-cover transition-all"
+                                    style={{display: loadingImagem.includes(item.id) ? 'block' : 'none'}}
+                                    src={item.fotos[0].url}
+                                    alt="carro"
+                                    onLoad={() => loadingImages(item.id)}
+                                />
                             </div>
-                            <hr className="h-1" />
-                            <p className="px-4 py-2 pb-4 text-gray-500 flex items-center gap-2"><PiMapPin />{item.cidade} - {item.estado}</p>
+
+                            <div>
+                                <h1 className=" sm:text-[1.2rem] font-bold text-red-700 mx-4 "><span className="text-gray-700">{item.marca}</span> {item.nomeCarro}</h1>
+                                <p className="mx-4 mb-4 text-gray-500 text-[.8rem]">{item.modelo}</p>
+                                <strong className="mx-4 mb-4 sm:text-[1.4rem] text-gray-700">R$ {item.valor}</strong>
+                                <div className="w-full flex justify-between px-4 mb-4">
+                                    <p className="text-gray-500 ">{item.ano}</p>
+                                    <p className="text-gray-500 ml-2">{item.km} km</p>
+                                </div>
+                                <hr className="h-1" />
+                                <p className="px-4 py-2 pb-4 text-gray-500 flex items-center gap-2"><PiMapPin />{item.cidade} - {item.estado}</p>
+                            </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>
                 ))}
 
             </section>
