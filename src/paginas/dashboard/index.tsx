@@ -102,11 +102,11 @@ export function Dashboard() {
                 console.log(erro)
             })
 
-            item.fotos.map(async (item)=>{
+            anunciosRef.fotos.map(async (item)=>{
                 const imagePath = `imagens/${item.uid}/${item.nome}`
                 const imageRef = ref(storage, imagePath)
                 deleteObject(imageRef)
-                setAnuncios(anuncios.filter((item) => item.id !== item.id))
+                setAnuncios(anuncios.filter((item) => item.id !== anunciosRef.id))
             })
         }
     }
@@ -120,17 +120,18 @@ export function Dashboard() {
                     <button className="w-[20%] flex items-center justify-center bg-red-700 hover:bg-red-600 transition-all text-white rounded-md p-2 px-8 ">Buscar</button>
                 </div>
 
-                <h1 className="text-[1.4rem] text-center font-bold mb-[60px]">Seus anúncios</h1>
+                <h1 className="text-[1.4rem] text-center font-bold mb-[60px]">{anuncios.length == 0 ? 'Você ainda não tem anúncios' : 'Seus anúncios'}</h1>
 
                 <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:m-4">
                     {anuncios.map((item) => (
                         <section key={item.id}>
-                            <div className="bg-white rounded-lg overflow-hidden ">
+                            <div className="h-[430px] bg-white rounded-lg overflow-hidden flex flex-col justify-between ">
                                 <div className="w-[full] h-[200px] mb-3 bg-slate-200 flex items-center justify-center" style={{ display: loadingImagem.includes(item.id) ? 'none' : 'flex' }}><Lottie className="absolute w-[150px]" animationData={spinnerCar} /></div>
-                                <div className="mb-3 overflow-hidden relative">
+                                
+                                <div className="max-h-[200px] mb-3 overflow-hidden relative">
                                     <button className="absolute top-0 right-0 m-2 text-[1.2rem] text-white hover:scale-[1.05] transition-all z-10" onClick={() => delAnuncio(item)}><FaTrash /></button>
 
-                                    <img className="w-[full] h-[200px] hover:scale-[1.03] object-cover transition-all"
+                                    <img className="w-[full] hover:scale-[1.03] object-cover transition-all"
                                         style={{ display: loadingImagem.includes(item.id) ? 'block' : 'none' }}
                                         src={item.fotos[0].url}
                                         alt="carro"

@@ -27,7 +27,7 @@ const schema = z.object({
     cidade: z.string().nonempty("Campo obrigatório"),
     estado: z.string().nonempty("Campo obrigatório"),
     whatsapp: z.string().nonempty("Campo obrigatório"),
-    descricao: z.string().nonempty("Campo obrigatório"),
+    descricao: z.string()
 
 })
 

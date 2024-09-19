@@ -76,10 +76,11 @@ export function Home() {
             <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:m-4">
                 {anuncios.map((item) => (
                     <Link to={`/detalhes/${item.id}`} key={item.id}>
-                        <div className="bg-white rounded-lg overflow-hidden ">
+                        <div className="h-[430px] bg-white rounded-lg overflow-hidden flex flex-col justify-between ">
                             <div className="w-[full] h-[200px] mb-3 bg-slate-200 flex items-center justify-center" style={{display: loadingImagem.includes(item.id) ? 'none' : 'flex'}}><Lottie className="absolute w-[150px]" animationData={spinnerCar}/></div>
-                            <div className="mb-3 overflow-hidden">
-                                <img className="w-[full] h-[200px] hover:scale-[1.03] object-cover transition-all"
+                            
+                            <div className="max-h-[200px] mb-3 overflow-hidden">
+                                <img className="w-[full] hover:scale-[1.03] object-cover transition-all"
                                     style={{display: loadingImagem.includes(item.id) ? 'block' : 'none'}}
                                     src={item.fotos[0].url}
                                     alt="carro"
