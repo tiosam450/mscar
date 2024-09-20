@@ -1,7 +1,9 @@
 import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { db } from "../../services/conexaoFireBase"
+import { FaWhatsapp } from "react-icons/fa";
+import { PiMapPin } from "react-icons/pi";
 
 interface AnuncioProps {
     id: string
@@ -33,15 +35,15 @@ export function Detalhes() {
 
     useEffect(() => {
         function carregaAnuncios() {
-            if(!id){
+            if (!id) {
                 return
             }
 
             const docRef = doc(db, 'anuncios', id)
-            getDoc(docRef).then((item)=>{
+            getDoc(docRef).then((item) => {
                 setCarro({
                     id: id,
-                    marca: item.data()?.modelo,
+                    marca: item.data()?.marca,
                     nomeCarro: item.data()?.nomeCarro,
                     modelo: item.data()?.modelo,
                     valor: item.data()?.valor,
@@ -56,20 +58,43 @@ export function Detalhes() {
                     whatsapp: item.data()?.whatsapp,
                     data: item.data()?.data
                 }
-            )
-            
-        }).catch((erro)=>{
-            console.log(erro)
-        })
-    }
-    carregaAnuncios()
-    
-}, [])
+                )
 
-console.log(carro)
-return (
-        <section>
-            <h1>Detalhes</h1>
-        </section>
+            }).catch((erro) => {
+                console.log(erro)
+            })
+        }
+        carregaAnuncios()
+
+    }, [])
+
+    return (
+        <>
+            <div className="w-full max-h-[250px] mt-[-30px] object-cover overflow-hidden flex items-center justify-center">
+                <img className="w-full" src={carro?.fotos[0].url} alt="" />
+            </div>
+
+            <section className="!mt-[-30px] container w-full flex items-center justify-center gap-4 ">
+                <div className="bg-white w-full h-[500px] rounded-lg p-6">
+                    <h1 className=" sm:text-[1.8rem] font-bold text-red-700"><span className="text-gray-700">{carro?.marca}</span> {carro?.nomeCarro}</h1>
+
+                    <p className="mb-4 text-gray-500 text-[1rem]">{carro?.modelo}</p>
+                    
+                    <div className="w-full flex justify-between mb-4">
+                        <p className="text-gray-500 ">{carro?.ano}</p>
+                        <p className="text-gray-500 ml-2">{carro?.km} km</p>
+                    </div>
+                    <hr className="h-1" />
+                    <p className="py-2 pb-4 text-gray-500 flex items-center gap-2"><PiMapPin />{carro?.cidade} - {carro?.estado}</p>
+                </div>
+
+                <div className="bg-white w-[50%] h-[500px] rounded-lg p-8">
+                    <h1 className="font-bold text-gray-500 text-[1.8rem] mb-[30px]">R$ {carro?.valor}</h1>
+                    <button className="w-full p-2 bg-slate-600 hover:bg-green-500 transition-all rounded-lg text-white"><Link to={`wa.me/55${carro?.whatsapp}`} className="flex items-center justify-center gap-2 text-[1.6rem] font"><FaWhatsapp />{carro?.whatsapp}</Link></button>
+                </div>
+
+
+            </section>
+        </>
     )
 }
