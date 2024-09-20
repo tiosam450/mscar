@@ -6,7 +6,6 @@ import { db } from "../../services/conexaoFireBase"
 interface AnuncioProps {
     id: string
     marca: string
-    nome: string
     nomeCarro: string
     modelo: string
     valor: string
@@ -43,7 +42,6 @@ export function Detalhes() {
                 setCarro({
                     id: id,
                     marca: item.data()?.modelo,
-                    nome: item.data()?.nome,
                     nomeCarro: item.data()?.nomeCarro,
                     modelo: item.data()?.modelo,
                     valor: item.data()?.valor,
@@ -59,16 +57,17 @@ export function Detalhes() {
                     data: item.data()?.data
                 }
             )
-            console.log(carro)
-            }).catch((erro)=>{
-                console.log(erro)
-            })
-        }
-        carregaAnuncios()
+            
+        }).catch((erro)=>{
+            console.log(erro)
+        })
+    }
+    carregaAnuncios()
+    
+}, [])
 
-    }, [])
-
-    return (
+console.log(carro)
+return (
         <section>
             <h1>Detalhes</h1>
         </section>
