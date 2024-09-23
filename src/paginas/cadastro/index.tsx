@@ -26,6 +26,10 @@ const schema = z.object({
     valor: z.string().nonempty("Campo obrigatório"),
     cidade: z.string().nonempty("Campo obrigatório"),
     estado: z.string().nonempty("Campo obrigatório"),
+    troca: z.string(),
+    cor: z.string().nonempty("Campo obrigatório"),
+    cambio: z.string().nonempty("Campo obrigatório"),
+    combustivel: z.string().nonempty("Campo obrigatório"),
     whatsapp: z.string().nonempty("Campo obrigatório"),
     descricao: z.string()
 
@@ -74,6 +78,7 @@ export default function Cadastro() {
             valor: data.valor,
             cidade: data.cidade,
             estado: data.estado,
+            aceitatroca: data.troca,
             whatsapp: data.whatsapp,
             descricao: data.descricao,
             data: new Date(),
@@ -221,6 +226,28 @@ export default function Cadastro() {
 
                     <div className="flex gap-4">
                         <div className="w-full">
+                            <p className="text-[.9rem] font-bold mb-[3px]"> Cor:</p>
+                            <Input
+                                type="text"
+                                name="cor"
+                                placeholder="Ex: Branco"
+                                register={register}
+                                error={errors.cidade?.message}
+                            />
+                        </div>
+
+                        <div className="w-full">
+                            <p className="text-[.9rem] font-bold mb-[3px]"> Câmbio:</p>
+                            <select {...register("troca")} className="w-full border-[1px] outline-none p-2 rounded-md flex items-center" name="cambio">
+                                <option value="">Selecione</option>
+                                <option value="Manual">Manual</option>
+                                <option value="Automático">Automático</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                        <div className="w-full">
                             <p className="text-[.9rem] font-bold mb-[3px]"> Cidade:</p>
                             <Input
                                 type="text"
@@ -241,6 +268,33 @@ export default function Cadastro() {
                                 register={register}
                                 error={errors.estado?.message}
                             />
+                        </div>
+                    </div>
+
+                    <div className="flex gap-4 mb-[10px]">
+                        <div className="w-full flex flex-col">
+                            <p className="text-[.9rem] font-bold mb-[3px]"> Aceita troca:</p>
+
+                            <select {...register("troca")} className="w-full border-[1px] outline-none p-2 rounded-md flex items-center" name="troca">
+                                <option value="">Selecione</option>
+                                <option value="Sim">Sim</option>
+                                <option value="Não">Não</option>
+                            </select>
+
+                        </div>
+
+                        <div className="w-full">
+                            <p className="text-[.9rem] font-bold mb-[3px]"> Combustível:</p>
+
+                            <select {...register("troca")} className="w-full border-[1px] outline-none p-2 rounded-md flex items-center" name="combustivel" id="combustivel">
+                                <option value="">Selecione</option>
+                                <option value="Álcool">Álcool</option>
+                                <option value="Elétrico">Elétrico</option>
+                                <option value="Flex">Flex</option>
+                                <option value="Gasolina">Gasolina</option>
+                                <option value="Híbrido">Híbrido</option>
+                            </select>
+
                         </div>
                     </div>
 

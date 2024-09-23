@@ -79,10 +79,39 @@ export function Detalhes() {
                     <h1 className=" sm:text-[1.8rem] font-bold text-red-700"><span className="text-gray-700">{carro?.marca}</span> {carro?.nomeCarro}</h1>
 
                     <p className="mb-4 text-gray-500 text-[1rem]">{carro?.modelo}</p>
-                    
-                    <div className="w-full flex justify-between mb-4">
-                        <p className="text-gray-500 ">{carro?.ano}</p>
-                        <p className="text-gray-500 ml-2">{carro?.km} km</p>
+
+                    <div className="w-full flex flex-col mb-4">
+                        <div className="mb-4">
+                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Ano:</p>
+                            <p className="font-bold text-[1.2rem]">{carro?.ano}</p>
+                        </div>
+                        
+                        <div className="mb-4">
+                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Km:</p>
+                            <p className="font-bold text-[1.2rem]">{carro?.km}</p>
+                        </div>
+                        
+                        <div className="mb-4">
+                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Cor:</p>
+                            <p className="font-bold text-[1.2rem]">{carro?.km}</p>
+                        </div>
+                        
+                        <div className="mb-4">
+                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Combustível:</p>
+                            <p className="font-bold text-[1.2rem]">{carro?.combustivel}</p>
+                        </div>
+                        
+                        <div className="mb-4">
+                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Câmbio:</p>
+                            <p className="font-bold text-[1.2rem]">{carro?.cambio}</p>
+                        </div>
+                        
+                        <div className="mb-4">
+                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Aceita troca:</p>
+                            <p className="font-bold text-[1.2rem]">{carro?.troca}</p>
+                        </div>
+
+
                     </div>
                     <hr className="h-1" />
                     <p className="py-2 pb-4 text-gray-500 flex items-center gap-2"><PiMapPin />{carro?.cidade} - {carro?.estado}</p>
