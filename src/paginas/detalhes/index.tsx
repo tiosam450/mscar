@@ -16,6 +16,9 @@ interface AnuncioProps {
     km: string
     cidade: string
     estado: string
+    cambio: string
+    combustivel: string
+    troca: string
     fotos: GaleriaProps[]
     uid: string
     proprietario: string
@@ -52,6 +55,9 @@ export function Detalhes() {
                     km: item.data()?.km,
                     cidade: item.data()?.cidade,
                     estado: item.data()?.estado,
+                    cambio: item.data()?.cambio,
+                    troca: item.data()?.troca,
+                    combustivel: item.data()?.combustivel,
                     fotos: item.data()?.fotos,
                     uid: item.data()?.uid,
                     proprietario: item.data()?.proprietario,
