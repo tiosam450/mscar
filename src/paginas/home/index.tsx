@@ -26,6 +26,7 @@ interface GaleriaProps {
 }
 
 export function Home() {
+    const [loadingPage, setLoadingPage]  = useState(true)
     const [anuncios, setAnuncios] = useState<AnuncioProps[]>([])
     const [loadingImagem, setLoadingImagem] = useState<string[]>([])
 

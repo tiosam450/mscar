@@ -7,14 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useContext, useState } from "react";
 import toast from "react-hot-toast";
 import conteudoAPI from "../../services/contexAPI";
-import { v4 as uuidV4 } from 'uuid'
+import { v4 as uuidV4 } from 'uuid';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../../services/conexaoFireBase";
-import spinnerCar from '../../assets/spinner_car.json'
-import Lottie from "lottie-react"
+import spinnerCar from '../../assets/spinner_car.json';
+import Lottie from "lottie-react";
 import { FaTrash } from "react-icons/fa";
 import { addDoc, collection } from "firebase/firestore";
-
 
 
 const schema = z.object({
@@ -28,8 +27,8 @@ const schema = z.object({
     estado: z.string().nonempty("Campo obrigatório"),
     troca: z.string(),
     cor: z.string().nonempty("Campo obrigatório"),
-    cambio: z.string().nonempty("Campo obrigatório"),
-    combustivel: z.string().nonempty("Campo obrigatório"),
+    cambio: z.string(),
+    combustivel: z.string(),
     whatsapp: z.string().nonempty("Campo obrigatório"),
     descricao: z.string()
 
@@ -78,7 +77,9 @@ export default function Cadastro() {
             valor: data.valor,
             cidade: data.cidade,
             estado: data.estado,
-            aceitatroca: data.troca,
+            troca: data.troca,
+            combustivel: data.combustivel,
+            cambio: data.cambio,
             whatsapp: data.whatsapp,
             descricao: data.descricao,
             data: new Date(),
@@ -238,7 +239,7 @@ export default function Cadastro() {
 
                         <div className="w-full">
                             <p className="text-[.9rem] font-bold mb-[3px]"> Câmbio:</p>
-                            <select {...register("troca")} className="w-full border-[1px] outline-none p-2 rounded-md flex items-center" name="cambio">
+                            <select {...register("cambio")} className="w-full border-[1px] outline-none p-2 rounded-md flex items-center" name="cambio">
                                 <option value="">Selecione</option>
                                 <option value="Manual">Manual</option>
                                 <option value="Automático">Automático</option>
@@ -286,7 +287,7 @@ export default function Cadastro() {
                         <div className="w-full">
                             <p className="text-[.9rem] font-bold mb-[3px]"> Combustível:</p>
 
-                            <select {...register("troca")} className="w-full border-[1px] outline-none p-2 rounded-md flex items-center" name="combustivel" id="combustivel">
+                            <select {...register("combustivel")} className="w-full border-[1px] outline-none p-2 rounded-md flex items-center" name="combustivel" id="combustivel">
                                 <option value="">Selecione</option>
                                 <option value="Álcool">Álcool</option>
                                 <option value="Elétrico">Elétrico</option>
