@@ -80,6 +80,7 @@ export default function Cadastro() {
             troca: data.troca,
             combustivel: data.combustivel,
             cambio: data.cambio,
+            cor: data.cor,
             whatsapp: data.whatsapp,
             descricao: data.descricao,
             data: new Date(),
@@ -94,8 +95,6 @@ export default function Cadastro() {
             toast.error('Ops! Algo deu errado')
             console.log(erro)
         })
-
-
     }
 
     function enviaImagem(e: ChangeEvent<HTMLInputElement>) {
