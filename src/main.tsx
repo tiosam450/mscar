@@ -1,5 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import rotas from './rotas/rotas'

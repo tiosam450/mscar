@@ -5,6 +5,9 @@ import { db } from "../../services/conexaoFireBase"
 import { FaWhatsapp } from "react-icons/fa";
 import { PiMapPin } from "react-icons/pi";
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Keyboard, Pagination, Navigation } from 'swiper/modules';
+
 interface AnuncioProps {
     id: string
     marca: string
@@ -19,6 +22,7 @@ interface AnuncioProps {
     cambio: string
     combustivel: string
     troca: string
+    cor: string
     fotos: GaleriaProps[]
     uid: string
     proprietario: string
@@ -57,6 +61,7 @@ export function Detalhes() {
                     estado: item.data()?.estado,
                     cambio: item.data()?.cambio,
                     troca: item.data()?.troca,
+                    cor: item.data()?.cor,
                     combustivel: item.data()?.combustivel,
                     fotos: item.data()?.fotos,
                     uid: item.data()?.uid,
@@ -76,58 +81,80 @@ export function Detalhes() {
 
     return (
         <>
-            <div className="w-full max-h-[250px] mt-[-30px] object-cover overflow-hidden flex items-center justify-center">
-                <img className="w-full" src={carro?.fotos[0].url} alt="" />
+            <div className="w-full max-h-[250px]  object-cover flex items-center justify-center mb-[100px]">
+                <Swiper
+                    slidesPerView={2}
+                    spaceBetween={0}
+                    keyboard={{
+                        enabled: true,
+                    }}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    navigation={true}
+                    modules={[Keyboard, Pagination, Navigation]}
+                    className="mySwiper"
+                >
+                    {carro?.fotos.map((foto)=>(
+                        <SwiperSlide key={foto.nome}><img src={foto.url} alt={foto.nome} /></SwiperSlide>
+                    ))}
+                    
+                </Swiper>
             </div>
 
-            <section className="!mt-[-30px] container w-full flex items-center justify-center gap-4 ">
-                <div className="bg-white w-full h-[500px] rounded-lg p-6">
+            <section className="mt-[16px] container w-full flex flex-col !items-start md:flex-row gap-4 ">
+                <div className="bg-white w-full rounded-lg p-6">
                     <h1 className=" sm:text-[1.8rem] font-bold text-red-700"><span className="text-gray-700">{carro?.marca}</span> {carro?.nomeCarro}</h1>
 
                     <p className="mb-4 text-gray-500 text-[1rem]">{carro?.modelo}</p>
 
-                    <div className="w-full flex flex-col mb-4">
-                        <div className="mb-4">
-                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Ano:</p>
-                            <p className="font-bold text-[1.2rem]">{carro?.ano}</p>
-                        </div>
-                        
-                        <div className="mb-4">
-                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Km:</p>
-                            <p className="font-bold text-[1.2rem]">{carro?.km}</p>
-                        </div>
-                        
-                        <div className="mb-4">
-                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Cor:</p>
-                            <p className="font-bold text-[1.2rem]">{carro?.km}</p>
-                        </div>
-                        
-                        <div className="mb-4">
-                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Combustível:</p>
-                            <p className="font-bold text-[1.2rem]">{carro?.combustivel}</p>
-                        </div>
-                        
-                        <div className="mb-4">
-                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Câmbio:</p>
-                            <p className="font-bold text-[1.2rem]">{carro?.cambio}</p>
-                        </div>
-                        
-                        <div className="mb-4">
-                            <p className="text-gray-500 text-[.9rem] mb-[-5px]">Aceita troca:</p>
-                            <p className="font-bold text-[1.2rem]">{carro?.troca}</p>
+                    <div className="w-full flex mb-4">
+                        <div>
+                            <div className="mb-4">
+                                {carro?.ano ? <p className="text-gray-500 text-[.9rem] mb-[-5px]">Ano:</p> : ""}
+                                <p className="font-medium text-[1.2rem]">{carro?.ano}</p>
+                            </div>
+
+                            <div className="mb-4">
+                                {carro?.km ? <p className="text-gray-500 text-[.9rem] mb-[-5px]">Km:</p> : ""}
+                                <p className="font-medium text-[1.2rem]">{carro?.km}</p>
+                            </div>
+
+                            <div className="mb-4">
+                                {carro?.cor ? <p className="text-gray-500 text-[.9rem] mb-[-5px]">Cor:</p> : ""}
+                                <p className="font-medium text-[1.2rem]">{carro?.cor}</p>
+                            </div>
                         </div>
 
+                        <div className="ml-[50px] sm:ml-[100px]">
+                            <div className="mb-4">
+                                {carro?.combustivel ? <p className="text-gray-500 text-[.9rem] mb-[-5px]">Combustível:</p> : ""}
+                                <p className="font-medium text-[1.2rem]">{carro?.combustivel}</p>
+                            </div>
 
+                            <div className="mb-4">
+                                {carro?.cambio ? <p className="text-gray-500 text-[.9rem] mb-[-5px]">Câmbio:</p> : ""}
+                                <p className="font-medium text-[1.2rem]">{carro?.cambio}</p>
+                            </div>
+
+                            <div className="mb-4">
+                                {carro?.troca ? <p className="text-gray-500 text-[.9rem] mb-[-5px]">Aceita troca:</p> : ""}
+                                <p className="font-medium text-[1.2rem]">{carro?.troca}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mb-6">
+                        {carro?.descricao ? <p className="text-gray-500 text-[.9rem] mb-[px]">Descrição:</p> : ''}
+                        <p className=" text-[1rem]">{carro?.descricao}</p>
                     </div>
                     <hr className="h-1" />
-                    <p className="py-2 pb-4 text-gray-500 flex items-center gap-2"><PiMapPin />{carro?.cidade} - {carro?.estado}</p>
+                    <p className="py-4 pb-4 text-gray-500 flex items-center gap-2"><PiMapPin />{carro?.cidade} - {carro?.estado}</p>
                 </div>
 
-                <div className="bg-white w-[50%] h-[500px] rounded-lg p-8">
-                    <h1 className="font-bold text-gray-500 text-[1.8rem] mb-[30px]">R$ {carro?.valor}</h1>
-                    <button className="w-full p-2 bg-slate-600 hover:bg-green-500 transition-all rounded-lg text-white"><Link to={`wa.me/55${carro?.whatsapp}`} className="flex items-center justify-center gap-2 text-[1.6rem] font"><FaWhatsapp />{carro?.whatsapp}</Link></button>
+                <div className="bg-white w-full order-first md:order-last md:w-[60%] lg:md:w-[50%] rounded-lg p-4 md:p-8">
+                    <h1 className="font-bold text-gray-500 text-[1.6rem] md:text-[1.8rem] mb-[10px] md:mb-[20px]">R$ {carro?.valor}</h1>
+                    <button className="w-full p-2 bg-slate-600 hover:bg-green-500 transition-all rounded-lg text-white"><Link to={`wa.me/55${carro?.whatsapp}`} className="flex items-center justify-center gap-2 text-[1.2rem] md:text-[1.4rem] font"><FaWhatsapp />{carro?.whatsapp}</Link></button>
                 </div>
-
 
             </section>
         </>
