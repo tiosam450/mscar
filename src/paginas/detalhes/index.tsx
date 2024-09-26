@@ -5,7 +5,7 @@ import { db } from "../../services/conexaoFireBase"
 import { FaWhatsapp } from "react-icons/fa";
 import { PiMapPin } from "react-icons/pi";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Zoom,Keyboard, Pagination, Navigation } from 'swiper/modules';
+import { Zoom, Keyboard, Pagination, Navigation } from 'swiper/modules';
 
 interface AnuncioProps {
     id: string
@@ -80,7 +80,7 @@ export function Detalhes() {
 
     return (
         <>
-            <div className="w-full object-cover flex items-center justify-center mb-[30px]">
+            <div className="w-full object-cover flex items-center justify-center mb-[30px] ">
                 <Swiper
                     slidesPerView={'auto'}
                     centeredSlides={true}
@@ -93,12 +93,11 @@ export function Detalhes() {
                     }}
                     navigation={true}
                     modules={[Zoom, Keyboard, Pagination, Navigation]}
-                    className="w-full max-h-[350px]  object-cover flex items-center justify-center"
-                >
-                    {carro?.fotos.map((foto)=>(
+                    className="w-full max-w-[1160px] max-h-[350px] bg-white object-cover flex items-center justify-center rounded-lg ">
+                    {carro?.fotos.map((foto) => (
                         <SwiperSlide key={foto.nome}><div className="swiper-zoom-container"><img src={foto.url} alt={foto.nome} /></div></SwiperSlide>
                     ))}
-                    
+
                 </Swiper>
             </div>
 
