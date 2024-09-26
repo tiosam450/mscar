@@ -4,9 +4,8 @@ import { Link, useParams } from "react-router-dom"
 import { db } from "../../services/conexaoFireBase"
 import { FaWhatsapp } from "react-icons/fa";
 import { PiMapPin } from "react-icons/pi";
-
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Keyboard, Pagination, Navigation } from 'swiper/modules';
+import { Zoom,Keyboard, Pagination, Navigation } from 'swiper/modules';
 
 interface AnuncioProps {
     id: string
@@ -81,10 +80,11 @@ export function Detalhes() {
 
     return (
         <>
-            <div className="w-full max-h-[250px]  object-cover flex items-center justify-center mb-[100px]">
+            <div className="w-full object-cover flex items-center justify-center mb-[30px]">
                 <Swiper
-                    slidesPerView={2}
-                    spaceBetween={0}
+                    slidesPerView={'auto'}
+                    centeredSlides={true}
+                    zoom={true}
                     keyboard={{
                         enabled: true,
                     }}
@@ -92,11 +92,11 @@ export function Detalhes() {
                         clickable: true,
                     }}
                     navigation={true}
-                    modules={[Keyboard, Pagination, Navigation]}
-                    className="mySwiper"
+                    modules={[Zoom, Keyboard, Pagination, Navigation]}
+                    className="w-full max-h-[350px]  object-cover flex items-center justify-center"
                 >
                     {carro?.fotos.map((foto)=>(
-                        <SwiperSlide key={foto.nome}><img src={foto.url} alt={foto.nome} /></SwiperSlide>
+                        <SwiperSlide key={foto.nome}><div className="swiper-zoom-container"><img src={foto.url} alt={foto.nome} /></div></SwiperSlide>
                     ))}
                     
                 </Swiper>
