@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { db } from "../../services/conexaoFireBase"
 import { FaWhatsapp } from "react-icons/fa";
 import { PiMapPin } from "react-icons/pi";
@@ -38,6 +38,8 @@ interface GaleriaProps {
 export function Detalhes() {
     const [carro, setCarro] = useState<AnuncioProps>()
     const { id } = useParams()
+    const whats = carro?.whatsapp.replace(/[^a-zA-Z0-9]/g, '');
+    const navigate = useNavigate()
 
     useEffect(() => {
         function carregaAnuncios() {
@@ -47,6 +49,11 @@ export function Detalhes() {
 
             const docRef = doc(db, 'anuncios', id)
             getDoc(docRef).then((item) => {
+
+                if(!item.data()){
+                    navigate('/', {replace:true})
+                }
+
                 setCarro({
                     id: id,
                     marca: item.data()?.marca,
@@ -75,7 +82,6 @@ export function Detalhes() {
             })
         }
         carregaAnuncios()
-
     }, [])
 
     return (
@@ -83,7 +89,8 @@ export function Detalhes() {
             <div className="w-full object-cover flex items-center justify-center mb-[30px] ">
                 <Swiper
                     slidesPerView={'auto'}
-                    centeredSlides={true}
+                    centeredSlides={false}
+                    spaceBetween={1}
                     zoom={true}
                     keyboard={{
                         enabled: true,
@@ -152,7 +159,7 @@ export function Detalhes() {
 
                 <div className="bg-white w-full order-first md:order-last md:w-[60%] lg:md:w-[50%] rounded-lg p-4 md:p-8">
                     <h1 className="font-bold text-gray-500 text-[1.6rem] md:text-[1.8rem] mb-[10px] md:mb-[20px]">R$ {carro?.valor}</h1>
-                    <button className="w-full p-2 bg-slate-600 hover:bg-green-500 transition-all rounded-lg text-white"><Link to={`wa.me/55${carro?.whatsapp}`} className="flex items-center justify-center gap-2 text-[1.2rem] md:text-[1.4rem] font"><FaWhatsapp />{carro?.whatsapp}</Link></button>
+                    <button className="w-full p-2 bg-slate-600 hover:bg-green-500 transition-all rounded-lg text-white"><a href={`https://wa.me/55${whats}/?text=Olá vi o ${carro?.marca} ${carro?.nomeCarro} e fiquei interessado!` }target='blank' className="flex items-center justify-center gap-2 text-[1.2rem] md:text-[1.4rem] font"><FaWhatsapp />{carro?.whatsapp}</a></button>
                 </div>
 
             </section>
